@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gt.myfirstapp" >
+    package="com.example.gt.smartsleeper" >
 
     <uses-sdk android:minSdkVersion="11" />
 
@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CustomActionBarTheme">
 
         <!-- The main/home activity (it has no parent activity) -->
         <activity
@@ -28,7 +28,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.gt.myfirstapp.MainActivity" />
+                android:value="com.example.gt.SmartSleeper.MainActivity" />
         </activity>
 
     </application>

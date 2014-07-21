@@ -1,0 +1,18 @@
+Smart Sleeper
+By: Gordon Tang
+Started: July 1, 2014
+
+App description:
+Automatically sets an optimal wake-up alarm for sleepers based on their last action and preferred sleep cycles.
+
+Functions:
+
+Set Preferences
+    # of sleep cycles
+    Average sleep time (and time zone)
+
+Sleep cycle counter
+    Record time of last action
+    Calculate wake up time based on sleep cycles
+
+Set default Alarm

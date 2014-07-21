@@ -1,7 +1,6 @@
-package com.example.gt.myfirstapp;
+package com.example.gt.smartsleeper;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.content.Intent;
 import android.widget.EditText;
 import android.view.MenuInflater;
@@ -18,7 +16,7 @@ import android.view.MenuInflater;
 public class MainActivity extends Activity {
 
     // Setting the extra message to a unique key + "MESSAGE"
-    public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    public final static String EXTRA_MESSAGE = "com.example.gt.smartsleeper.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +49,11 @@ public class MainActivity extends Activity {
             case R.id.action_search:
                 // Action to perform to Search
                 //openSearch();
-                return true;
+                return true; //temp, until function written
             case R.id.action_settings:
                 // Action to perform to open Settings
                 //openSettings();
-                return true;
+                return true; //temp, until function written
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -90,12 +88,30 @@ public class MainActivity extends Activity {
         // Set # of sleep cycles before wake up in response to button click
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
+        String sleepCycles = editText.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, sleepCycles);
+        startActivity(intent);
+    }
+
+    //should merge this with setSleepCycles as setPreferences
+    public void setBedTime(View view) {
+        // Set average start time of a night's sleep
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
 
     public void openSettings(){
+        // call Settings Activity
 
+        // Field for average bed time
+
+        // Field for # of sleep cycles preferred
+
+    }
+    public void openSearch(){
+        //unused
     }
 }

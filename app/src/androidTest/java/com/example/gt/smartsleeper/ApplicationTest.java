@@ -1,4 +1,4 @@
-package com.example.gt.myfirstapp;
+package com.example.gt.smartsleeper;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,10 +1,9 @@
-package com.example.gt.myfirstapp;
+package com.example.gt.smartsleeper;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.example.gt.myfirstapp.R;
 import android.content.Intent;
 import android.widget.TextView;
 

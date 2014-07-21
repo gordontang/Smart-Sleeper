@@ -2,20 +2,21 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 'android-L'
-    buildToolsVersion "20.0.0"
-
+    buildToolsVersion '20.0.0'
     defaultConfig {
-        applicationId "com.example.gt.myfirstapp"
+        applicationId 'com.gt.smartsleeper'
         minSdkVersion 15
         targetSdkVersion 'L'
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
