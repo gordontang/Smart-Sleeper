@@ -6,11 +6,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.gt.smartsleeper.DisplayMessageActivity">
+    tools:context="com.example.gt.smartsleeper.ConfirmationActivity">
 
-    <!--<TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
+    <TextView
+    android:text="@string/confirmed"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:textSize="12pt"
+    android:textColor="@color/action"/>
 
 </RelativeLayout>

@@ -7,12 +7,12 @@ import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.TextView;
 
-public class DisplayMessageActivity extends Activity {
+public class ConfirmationActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_message);
+        setContentView(R.layout.activity_confirmation);
 
         // Defining "Up" Navigation
         // If minSdkVersion is not 11 or higher, use:
@@ -22,7 +22,7 @@ public class DisplayMessageActivity extends Activity {
 
         // Get the message from the intent
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra(MainActivity.EXTRA_CYCLES);
 
         // Create the text view
         TextView textView = new TextView(this);
@@ -37,7 +37,7 @@ public class DisplayMessageActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.display_message, menu);
+        getMenuInflater().inflate(R.menu.confirmation, menu);
         return true;
     }
 

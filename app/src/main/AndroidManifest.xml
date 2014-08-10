@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gt.smartsleeper" >
 
-    <uses-sdk android:minSdkVersion="11" />
+    <uses-sdk android:minSdkVersion="15" />
 
     <application
         android:allowBackup="true"
@@ -23,8 +23,8 @@
 
         <!-- A child of the main activity -->
         <activity
-            android:name=".DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
+            android:name=".ConfirmationActivity"
+            android:label="@string/title_activity_confirmation"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

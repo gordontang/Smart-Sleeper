@@ -24,5 +24,11 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
+        // Set a temporary variable with the user's average bed time
+        MainActivity.bhour = hourOfDay;
+        MainActivity.bminute = minute;
+
+        MainActivity.bdTime.setText(MainActivity.bhour+":"+MainActivity.bminute);
     }
+
 }

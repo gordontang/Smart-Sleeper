@@ -3,17 +3,23 @@
 
     <!-- Definitions of various string resources -->
     <string name="app_name">Smart Sleeper</string>
-    <string name="hello_world">Set your sleep preferences!</string>
     <string name="action_settings">Settings</string>
-    <string name="enter_cycles">Enter # of sleep cycles</string>
+    <string name="enter_cycles">Preferred Sleep Cycles:</string>
     <string name="edit_message">Enter # of sleep cycles</string>
-    <string name="button_send">Set</string>
+    <string name="button_send">Set Alarm</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_display_message">String_Activity_display_message</string>
+    <string name="title_activity_confirmation">Confirmation screen</string>
     <string name="action_search">Search</string>
     <string name="done">Done</string>
+
+    <!-- Preferences - string definitions -->
     <string name="set_time">Time</string>
     <string name="set_date">Date</string>
-    <string name="desc_settings">Set your sleep preferences here!</string>
+    <string name="desc_settings">Set your sleep preferences!</string>
+    <string name="pick_bedTime">Average Bed Time</string>
+    <string name="pick_wakeTime">Latest Wake Up Time</string>
+
+    <!-- Confirmation Screen -->
+    <string name="confirmed">Preferences Saved!</string>
 
 </resources>

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 'android-L'
     buildToolsVersion '20.0.0'
     defaultConfig {
-        applicationId 'com.gt.smartsleeper'
+        applicationId 'com.example.gt.smartsleeper'
         minSdkVersion 15
         targetSdkVersion 'L'
         versionCode 1
