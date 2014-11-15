@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +16,6 @@ import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.MenuInflater;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -24,6 +24,8 @@ import java.util.Calendar;
 
 public class MainActivity extends Activity {
 
+    //tag for logcat output (e.g. console output)
+    private static final String TAG = MainActivity.class.getSimpleName();
     // Declaring and initializing the extra message to cycles value
     public static String EXTRA_CYCLES = "com.example.gt.smartsleeper.CYCLES";
     public int hour;
@@ -31,22 +33,28 @@ public class MainActivity extends Activity {
 
     public static int bhour;
     public static int bminute;
+    public static String btimepickertime;
+    public static int whour;
+    public static int wminute;
+    public static String wtimepickertime;
 
     static final int TIME_DIALOG_ID=1;
 
-    public static TextView  bdTime;
+    public static TextView bdTime;
+    public static TextView wakeTime;
     private TimePicker timePicker1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //screen content set to activity_main.xml
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
+/*        if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
-        }
+        }*/
     }
 
 
@@ -55,6 +63,7 @@ public class MainActivity extends Activity {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        //menu content set to main.xml
         return super.onCreateOptionsMenu(menu);
 
 //        // Inflate the menu; this adds items to the action bar if it is present.
@@ -63,8 +72,8 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    // Handle presses on the action bar items
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
         switch (item.getItemId()) {
             /*case R.id.action_search:
                 // Action to perform to Search
@@ -99,14 +108,18 @@ public class MainActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.activity_main, container, false);
             return rootView;
         }
     }
 
     public void setPreferences(View view) {
         // Set Preferences: avg bed time, # of sleep cycles before wake up in response to button click
-        Intent intent = new Intent(this, ConfirmationActivity.class);
+        Log.d(TAG,"Set Alarm button pressed");
+
+
+
+ /*       Intent intent = new Intent(this, ConfirmationActivity.class);
         NumberPicker numberPicker  = (NumberPicker) findViewById(R.id.cycles);
         numberPicker.setMaxValue(10);
         numberPicker.setMinValue(0);
@@ -125,7 +138,7 @@ public class MainActivity extends Activity {
 //        }
 
         // Start next activity (e.g. display confirmation message)
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     //should merge this with setSleepCycles as setPreferences
@@ -153,17 +166,51 @@ public class MainActivity extends Activity {
     public void showNumberPickerDialog(View v) {
         DialogFragment newFragment = new NumberPickerFragment();
         newFragment.show(getFragmentManager(), "numberPicker");
+
     }
 
     public void showTimePickerDialog(View v) {
+        Log.d(TAG,"show timepickerdialog function called");
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
+        Log.d(TAG,"end of showTimePickerDialog");
     }
 
-    // display current time
+    //not in use right now!
+    // Create  TimePickerDialog listener
+/*    private TimePickerDialog.OnTimeSetListener bTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+
+                // the callback received when the user "sets" the TimePickerDialog in the dialog
+                public void onTimeSet(TimePicker view, int hourOfDay, int min) {
+                    hour = hourOfDay;
+                    minute = min;
+
+                    Log.d(TAG, "timepicker in main: " + hour + ":" + minute);
+
+                    bdTime.setText(hour+":"+minute);
+
+*//*                    //set textview accordingly
+                    TextView tv = (TextView) this.findViewById(R.id.textView_bedTime);
+                    tv.setText(""+ btimepickertime);*//*
+                }
+
+
+            };*/
+
+    /*TimePickerDialog.OnTimeSetListener mTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(android.widget.TimePicker view,
+                                      int hourOfDay, int minute) {
+                    Log.i("",""+hourOfDay+":"+minute);
+                }
+            };*/
+
+/*    // display current time
     public void setCurrentTimeOnView() {
 
-        bdTime = (TextView) findViewById(R.id.bdTime);
+        bdTime = (TextView) findViewById(R.id.textView_bedTime);
         //timePicker1 = (TimePicker) findViewById(R.id.bedTime);
 
         final Calendar c = Calendar.getInstance();
@@ -179,25 +226,15 @@ public class MainActivity extends Activity {
         timePicker1.setCurrentHour(hour);
         timePicker1.setCurrentMinute(minute);
 
-    }
+    }*/
 
-    // Register  TimePickerDialog listener
-    private TimePickerDialog.OnTimeSetListener bTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-                // the callback received when the user "sets" the TimePickerDialog in the dialog
-                public void onTimeSet(TimePicker view, int hourOfDay, int min) {
-                    hour = hourOfDay;
-                    minute = min;
-
-                    bdTime.setText(hour+":"+minute);
-
-                }
-            };
-
-
-    // Method automatically gets Called when you call showDialog()  method
+    //not in use right now!
+/*    // Method automatically gets Called when you call showDialog()  method
     @Override
     protected Dialog onCreateDialog(int id) {
+
+        Log.d(TAG,"onCreateDialog() called");
+
         switch (id) {
 
             // create a new TimePickerDialog with values you want to show
@@ -207,12 +244,21 @@ public class MainActivity extends Activity {
 
         }
         return null;
-    }
+    }*/
 
     private static String pad(int c) {
         if (c >= 10)
             return String.valueOf(c);
         else
             return "0" + String.valueOf(c);
+    }
+
+    public void calcMethod (View v) {
+        int i =1+1;
+        Log.d(TAG, "" + i);
+
+        TextView tv = (TextView) this.findViewById(R.id.button_bedTime); // textView_result is from the XML file
+
+        tv.setText(""+ i); //or tv.setText(Integer.toString(i);)
     }
 }

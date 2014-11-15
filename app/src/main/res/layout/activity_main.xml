@@ -1,8 +1,81 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    tools:context=".MainActivity"
-    tools:ignore="MergeRootFrame" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="?android:attr/actionBarSize"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/textView_description"
+        android:text="@string/desc_settings"
+        android:textSize="9pt"
+        android:textColor="@color/context"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
+    <Button
+        android:id="@+id/button_bedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_description"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_alignParentLeft="true"
+        android:text="@string/pick_bedTime"
+        android:textSize="8pt"
+        android:onClick="showTimePickerDialog"/>
+
+    <TextView
+        android:id="@+id/textView_bedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/button_bedTime"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="@dimen/settings_value_margin"
+        android:layout_alignParentRight="true"
+        android:textSize="8pt"
+        android:text="No time set!"/>
+
+    <Button
+        android:id="@+id/button_latestWakeUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_bedTime"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_alignParentLeft="true"
+        android:text="@string/pick_wakeTime"
+        android:textSize="8pt"
+        android:onClick="showTimePickerDialog"/>
+
+    <TextView
+        android:id="@+id/textView_wkTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/button_latestWakeUp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="@dimen/settings_value_margin"
+        android:layout_alignParentRight="true"
+        android:textSize="8pt"
+        android:text="7:40am"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_latestWakeUp"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/button_send"
+        android:textSize="14pt"
+        android:textColor="@color/action"
+        android:onClick="setPreferences"
+        android:id="@+id/button" />
+
+</RelativeLayout>
