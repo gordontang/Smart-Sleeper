@@ -18,6 +18,7 @@
     <string name="desc_settings">Set your sleep preferences!</string>
     <string name="pick_bedTime">Average Bed Time</string>
     <string name="pick_wakeTime">Latest Wake Up Time</string>
+    <string name="no_Time">No time set!</string>
 
     <!-- Confirmation Screen -->
     <string name="confirmed">Preferences Saved!</string>

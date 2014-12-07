@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyFirstApp.iml" filepath="$PROJECT_DIR$/MyFirstApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SmartSleeper.iml" filepath="$PROJECT_DIR$/SmartSleeper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Smart-Sleeper.iml" filepath="$PROJECT_DIR$/Smart-Sleeper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
