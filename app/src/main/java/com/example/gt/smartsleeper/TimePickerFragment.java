@@ -27,6 +27,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
         int dialogType = getArguments().getInt("dialogType");
         Log.d(TAG,""+dialogType);
+
         Log.d(TAG,"dialog created");
 
         // Create a new instance of TimePickerDialog and return it
@@ -82,9 +83,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
             Log.d(TAG, "Timepicker called with dialogType = 0!");
         }
 
-
     }
-
-
 
 }

@@ -154,9 +154,9 @@ public class MainActivity extends Activity {
         Date alarm = calculateAlarm(bhour,bminute,whour,wminute);
         Log.d(TAG,"Alarm set to: "+alarm);
         //from CalcMethod
-        TextView tv = (TextView) this.findViewById(R.id.button_bedTime); // textView_result is from the XML file
-
-        tv.setText(""); //or tv.setText(Integer.toString(i);)
+//        TextView tv = (TextView) this.findViewById(R.id.button_bedTime); // textView_result is from the XML file
+//
+//        tv.setText(""); //or tv.setText(Integer.toString(i);)
 
 
  /*       Intent intent = new Intent(this, ConfirmationActivity.class);
