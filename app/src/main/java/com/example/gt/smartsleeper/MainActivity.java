@@ -153,10 +153,9 @@ public class MainActivity extends Activity {
 
         Date alarm = calculateAlarm(bhour,bminute,whour,wminute);
         Log.d(TAG,"Alarm set to: "+alarm);
-        //from CalcMethod
-//        TextView tv = (TextView) this.findViewById(R.id.button_bedTime); // textView_result is from the XML file
-//
-//        tv.setText(""); //or tv.setText(Integer.toString(i);)
+
+        TextView tv = (TextView) this.findViewById(R.id.textView_alarmTime);
+        tv.setText("" + String.format("%s\n %tl:%<tM%<tp", "Alarm set for", alarm));
 
 
  /*       Intent intent = new Intent(this, ConfirmationActivity.class);
@@ -328,6 +327,7 @@ public class MainActivity extends Activity {
         System.out.println("date: "+ String.format("%tc", alarm));
         int cycles = 0; // maximum number of sleep cycles
         long diff = 0;
+        int alarmTime = 0;
 
         // Convert bed time and wake time hours and minutes to Date format
         try {
@@ -352,13 +352,27 @@ public class MainActivity extends Activity {
             System.out.println("diff:" + diff);
             
             // Calculating maximum # of sleep cycles possible between bed time and wake time.
-            cycles = (int) Math.floor( (diff - fallTime*60000) / (3600000 * 1.5) );
+            if(diff<=fallTime*60000){
+                cycles = 0; // when cycles would be otherwise negative
+            } else {
+                cycles = (int) Math.floor((diff - fallTime * 60000) / (3600000 * 1.5));
+            }
             System.out.println("cycles:" + cycles);
-
             // Calculating the time the alarm should ring
             System.out.println("alarm time calculation: " + bedTime.getTime() +","+ cycles +","+ fallTime);
-            int alarmTime = (int) Math.floor(bedTime.getTime() + cycles*1.5*3600000 + (fallTime*60000));
+            if(cycles == 0) {
+                // Assumption: Users will be taking a short nap if cycles=0
+                // and are not concerned with sleep cycles.
+                alarmTime = (int) wakeTime.getTime();
+            } else {
+                alarmTime = (int) Math.floor(bedTime.getTime() + cycles * 1.5 * 3600000 + (fallTime * 60000));
+            }
             System.out.println("alarm time: "+alarmTime);
+
+//            // Error handling in case alarm time is outside of bed to wake time range.
+//            if (alarmTime > wakeTime.getTime() || alarmTime < bedTime.getTime()){
+//                alarmTime = (int) wakeTime.getTime();
+//            }
 
             // Converting alarm time to Date format
             alarm = new Date(alarmTime);

@@ -46,7 +46,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
             final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
             final Date dateObj = sdf.parse(time);
             System.out.println(dateObj);
-            time = new SimpleDateFormat("K:mma").format(dateObj).toLowerCase(); //"3:53am", remove toLowerCase() for uppercase AM/PM
+            time = new SimpleDateFormat("h:mma").format(dateObj).toLowerCase(); //"3:53am", remove toLowerCase() for uppercase AM/PM
         } catch (final ParseException e) {
             e.printStackTrace();
         } catch (java.text.ParseException e) {

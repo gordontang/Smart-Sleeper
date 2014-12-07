@@ -76,6 +76,18 @@
         android:textSize="14pt"
         android:textColor="@color/action"
         android:onClick="setPreferences"
-        android:id="@+id/button" />
+        android:id="@+id/button_setAlarm" />
+
+    <TextView
+        android:id="@+id/textView_alarmTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/no_Time"
+        android:textSize="10pt"
+        android:textColor="@color/actionbar_text"
+        android:layout_alignTop="@id/button_setAlarm"/>
 
 </RelativeLayout>
