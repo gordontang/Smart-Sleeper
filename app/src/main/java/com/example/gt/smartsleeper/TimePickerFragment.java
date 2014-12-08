@@ -20,20 +20,41 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current time as the default values for the picker
-        final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-
+        // Pulling out dialogType from the Bundle.
         int dialogType = getArguments().getInt("dialogType");
         Log.d(TAG,""+dialogType);
 
-        Log.d(TAG,"dialog created");
+        boolean currentTimeFlag = false;
+        // Initializing variables containing default timepicker values
+        int hour = 0;
+        int minute = 0;
 
+        // Use bed/wake time if it was already set by user.
+        if (dialogType==1){
+            if (!MainActivity.btimepickertime.equals("0")) {
+                hour = MainActivity.bhour;
+                minute = MainActivity.bminute;
+            } else { currentTimeFlag = true; }
+        } else if (dialogType==2) {
+            if (!MainActivity.wtimepickertime.equals("0")) {
+                hour = MainActivity.whour;
+                minute = MainActivity.wminute;
+            } else { currentTimeFlag = true; }
+        } else {
+            currentTimeFlag = true;
+        }
+
+        // Use the current time as the default values for the picker
+        if (currentTimeFlag==true) {
+            final Calendar c = Calendar.getInstance();
+            hour = c.get(Calendar.HOUR_OF_DAY);
+            minute = c.get(Calendar.MINUTE);
+        }
+
+        Log.d(TAG,"dialog creation");
         // Create a new instance of TimePickerDialog and return it
         return new TimePickerDialog(getActivity(), this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
-
     }
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Set a temporary variable with the user's selected time

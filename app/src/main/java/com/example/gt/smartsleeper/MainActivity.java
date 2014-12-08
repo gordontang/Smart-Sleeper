@@ -30,20 +30,18 @@ public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
     // Declaring and initializing the extra message to cycles value
     public static String EXTRA_CYCLES = "com.example.gt.smartsleeper.CYCLES";
-    public int hour;
-    public int minute;
 
-    public static int bhour;
-    public static int bminute;
-    public static String btimepickertime;
-    public static int whour;
-    public static int wminute;
-    public static String wtimepickertime;
+    public static int bhour=0;
+    public static int bminute=0;
+    public static String btimepickertime="0";
+    public static int whour=0;
+    public static int wminute=0;
+    public static String wtimepickertime="0";
 
     static final int TIME_DIALOG_ID=1;
 
     public static TextView bdTime;
-    public static TextView wakeTime;
+    public static TextView wkTime;
     private TimePicker timePicker1;
     public static String alarmTime;
     public static int fallTime = 14; //minutes
