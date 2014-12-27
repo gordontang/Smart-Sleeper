@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import android.widget.TimePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class MainActivity extends Activity {
@@ -149,12 +151,32 @@ public class MainActivity extends Activity {
         // Set Preferences: avg bed time, # of sleep cycles before wake up in response to button click
         Log.d(TAG,"Set Alarm button pressed");
 
+        //calculate what time the alarm should go off
         Date alarm = calculateAlarm(bhour,bminute,whour,wminute);
-        Log.d(TAG,"Alarm set to: "+alarm);
+        Log.d(TAG,"Alarm time calculated: "+alarm);
 
+        // Update on screen text to alarm time
         TextView tv = (TextView) this.findViewById(R.id.textView_alarmTime);
         tv.setText("" + String.format("%s\n %tl:%<tM%<tp", "Alarm set for", alarm));
 
+        //trying to create a separate class for the alarm clock functionality
+        //boolean alarmSuccess = ManageAlarmClock.setAlarm(alarm);
+
+        // Getting time values (hour and minute) from Date variable
+        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+        calendar.setTime(alarm);   // assigns calendar to given date
+        int hour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
+        int minute = calendar.get(Calendar.MINUTE); // gets minute
+
+        // Setting an alarm on the Alarm Clock app with time
+        // Note: can only set times in next 24 hours
+        Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
+        i.putExtra(AlarmClock.EXTRA_MESSAGE, "Smart Alarm");
+        i.putExtra(AlarmClock.EXTRA_HOUR, hour);
+        i.putExtra(AlarmClock.EXTRA_MINUTES, minute);
+        //i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+        startActivity(i);
+        Log.d(TAG, "AlarmClock set for: " + hour + ":" + minute);
 
  /*       Intent intent = new Intent(this, ConfirmationActivity.class);
         NumberPicker numberPicker  = (NumberPicker) findViewById(R.id.cycles);
