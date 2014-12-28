@@ -3,6 +3,7 @@ package com.example.gt.smartsleeper;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.AlarmClock;
 import android.util.Log;
 
 /**
@@ -14,7 +15,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     // For Receiver implemented in Activity
     public static boolean wasScreenOn = true;
-    public static boolean isScreenOn = false;
+    public static boolean isScreenOn = true;
 
     @Override
     public void onReceive(final Context context, final Intent intent) {

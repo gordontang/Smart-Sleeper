@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-
 public class MainActivity extends Activity {
 
     //receiver for screen on/off state
@@ -37,8 +36,6 @@ public class MainActivity extends Activity {
     public static int whour=10;
     public static int wminute=0;
     public static String wtimepickertime="0";
-
-    static final int TIME_DIALOG_ID=1;
 
     public static TextView bdTime;
     public static TextView wkTime;
@@ -62,9 +59,7 @@ public class MainActivity extends Activity {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mReceiver = new ScreenReceiver();
         registerReceiver(mReceiver, filter);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,9 +76,8 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         // when the screen is about to turn off or app is moving to background
-
+        super.onPause();
         //onPause() is executed prior to ScreenReceiver's update
         //wasScreenOn is irrelevant here. isScreenOn is the state before onPause.
         //Cannot check what the new screen state is (either On/Off).
@@ -91,15 +85,13 @@ public class MainActivity extends Activity {
         Log.d(TAG, "onPause");
     }
 
-    public void doSomething(){
-        Log.e(TAG,"Doing something!");
-    }
-
+    public int numHandlers = 0;
+    public Handler handler = new Handler();
     @Override
     protected void onStop() {
         super.onStop();
         // when the screen is about to turn off or app will be moved to background
-        if (!ScreenReceiver.isScreenOn) {
+        if (ScreenReceiver.isScreenOn) {
             // this is when onStop() is called due to a screen state change
             Log.e(TAG, "onStop: screen was on");
         } else {
@@ -108,34 +100,49 @@ public class MainActivity extends Activity {
         }
 
         if (ScreenReceiver.isScreenOn) {
-            Log.d(TAG,"new onStop handler added to task queue");
-            // Set the alarm clock after a delay
-            final Handler handler = new Handler();
             // saving time of onStop() call
             final Calendar c = Calendar.getInstance();
             final int bh = c.get(Calendar.HOUR_OF_DAY);
             final int bm = c.get(Calendar.MINUTE);
-            handler.postDelayed(new Runnable() {
-
+            //defining the Runnable which Handler will call
+            Runnable r = new Runnable() {
                 @Override
-                public void run() {
+                public void run() { // Set the alarm clock
                     Log.d(TAG, "handler's delayed run called");
                     // Do after time delay if screen has been turned off
                     if (!ScreenReceiver.isScreenOn) {
                         Log.d(TAG, "Set alarm called from onStop()");
-                        //Set bed time to time of last onStop()
+                        //Set global bed time variables to time of last onStop()
                         bhour = bh;
                         bminute = bm;
-
                         //Set alarm
                         setAlarm();
-                        Log.e(TAG, "After time delay, alarm is set");
+                        numHandlers = 0;
+                        Log.e(TAG, "After time delay, alarm is set and numHandlers = "+numHandlers);
                     } else {
                         //do nothing
                         Log.d(TAG,"handler: Screen was on, so I did nothing");
+                        numHandlers = 0;
                     }
+                    Log.d(TAG,"numHandlers: "+numHandlers);
                 }
-            }, 7200000); //Time delay: 120 minutes = 7200000ms
+            };
+            Log.d(TAG,"numHandlers (before check): "+numHandlers);
+            if (numHandlers>=1){
+                //remove all callbacks from queue
+                handler.removeCallbacksAndMessages(null);
+                numHandlers=0;
+                Log.d(TAG,"old handlers removed, numHandlers="+numHandlers);
+                //only the newest Runnable callback will be executed
+            }
+            Log.d(TAG,"new onStop handler added to task queue. H:"+bh+"M:"+bm);
+                numHandlers=1;
+                Log.d(TAG,"numHandlers set to: "+numHandlers);
+            //Post the Runnable callback to the queue
+            handler.postDelayed(r, 3600000);
+            //Time delay: 60 minutes = 3600000ms
+        } else {
+            Log.d(TAG,"no new handler as screen was off");
         }
     }
 
@@ -161,7 +168,6 @@ public class MainActivity extends Activity {
         }
         super.onDestroy();
     }
-
 
     @Override
     // Handle presses on the action bar items
@@ -315,7 +321,7 @@ public class MainActivity extends Activity {
         Log.d(TAG,"end of showTimePickerDialog");
     }
 
-    public Date calculateAlarm (int bhour, int bmin, int whour, int wmin) {
+    public static Date calculateAlarm (int bhour, int bmin, int whour, int wmin) {
         // Calculates what time to set the alarm to.
         // Alarm should be set to rounddown of
         // = (wake time - bed time)/90 minutes + time req'd to fall asleep
