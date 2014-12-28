@@ -1,11 +1,12 @@
 package com.example.gt.smartsleeper;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Intent;
-import android.widget.Button;
-import android.widget.EditText;
 import android.view.MenuInflater;
 import android.widget.TextView;
-import android.widget.TimePicker;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -28,6 +24,8 @@ import java.util.GregorianCalendar;
 
 public class MainActivity extends Activity {
 
+    //receiver for screen on/off state
+    private BroadcastReceiver mReceiver = null;
     //tag for logcat output (e.g. console output)
     private static final String TAG = MainActivity.class.getSimpleName();
     // Declaring and initializing the extra message to cycles value
@@ -36,7 +34,7 @@ public class MainActivity extends Activity {
     public static int bhour=0;
     public static int bminute=0;
     public static String btimepickertime="0";
-    public static int whour=0;
+    public static int whour=10;
     public static int wminute=0;
     public static String wtimepickertime="0";
 
@@ -44,20 +42,27 @@ public class MainActivity extends Activity {
 
     public static TextView bdTime;
     public static TextView wkTime;
-    private TimePicker timePicker1;
     public static String alarmTime;
-    public static int fallTime = 14; //minutes
+    public static int fallTime = 14; //in minutes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //screen content set to activity_main.xml
         setContentView(R.layout.activity_main);
+
 /*        if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }*/
+
+        // initialize screen state receiver
+        final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        mReceiver = new ScreenReceiver();
+        registerReceiver(mReceiver, filter);
+
     }
 
 
@@ -73,6 +78,90 @@ public class MainActivity extends Activity {
 //        getMenuInflater().inflate(R.menu.main, menu);
 //        return true;
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // when the screen is about to turn off or app is moving to background
+
+        //onPause() is executed prior to ScreenReceiver's update
+        //wasScreenOn is irrelevant here. isScreenOn is the state before onPause.
+        //Cannot check what the new screen state is (either On/Off).
+        //isScreenOn will always be TRUE, so it does not provide useful info
+        Log.d(TAG, "onPause");
+    }
+
+    public void doSomething(){
+        Log.e(TAG,"Doing something!");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // when the screen is about to turn off or app will be moved to background
+        if (!ScreenReceiver.isScreenOn) {
+            // this is when onStop() is called due to a screen state change
+            Log.e(TAG, "onStop: screen was on");
+        } else {
+            // this is when onStop() is called when the screen state has not changed (still on)
+            Log.e(TAG, "onStop: screen was off");
+        }
+
+        if (ScreenReceiver.isScreenOn) {
+            Log.d(TAG,"new onStop handler added to task queue");
+            // Set the alarm clock after a delay
+            final Handler handler = new Handler();
+            // saving time of onStop() call
+            final Calendar c = Calendar.getInstance();
+            final int bh = c.get(Calendar.HOUR_OF_DAY);
+            final int bm = c.get(Calendar.MINUTE);
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    Log.d(TAG, "handler's delayed run called");
+                    // Do after time delay if screen has been turned off
+                    if (!ScreenReceiver.isScreenOn) {
+                        Log.d(TAG, "Set alarm called from onStop()");
+                        //Set bed time to time of last onStop()
+                        bhour = bh;
+                        bminute = bm;
+
+                        //Set alarm
+                        setAlarm();
+                        Log.e(TAG, "After time delay, alarm is set");
+                    } else {
+                        //do nothing
+                        Log.d(TAG,"handler: Screen was on, so I did nothing");
+                    }
+                }
+            }, 7200000); //Time delay: 120 minutes = 7200000ms
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // only when screen turns on or app is opened
+        if (ScreenReceiver.wasScreenOn!=ScreenReceiver.isScreenOn && !ScreenReceiver.isScreenOn) {
+            // this is when onResume() is called due to a screen state change
+            Log.e(TAG, "onResume: screen was off");
+        } else {
+            // this is when onResume() is called when the screen state has not changed
+            Log.e(TAG, "onResume: screen was on");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.e(TAG, "onDestroy");
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
+        super.onDestroy();
+    }
+
 
     @Override
     // Handle presses on the action bar items
@@ -147,7 +236,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void setPreferences(View view) {
+    public void setPreferences(View view){
+        setAlarm();
+    }
+
+    public void setAlarm() {
         // Set Preferences: avg bed time, # of sleep cycles before wake up in response to button click
         Log.d(TAG,"Set Alarm button pressed");
 
@@ -159,7 +252,7 @@ public class MainActivity extends Activity {
         TextView tv = (TextView) this.findViewById(R.id.textView_alarmTime);
         tv.setText("" + String.format("%s\n %tl:%<tM%<tp", "Alarm set for", alarm));
 
-        //trying to create a separate class for the alarm clock functionality
+//trying to create a separate class for the alarm clock functionality
         //boolean alarmSuccess = ManageAlarmClock.setAlarm(alarm);
 
         // Getting time values (hour and minute) from Date variable
@@ -176,39 +269,8 @@ public class MainActivity extends Activity {
         i.putExtra(AlarmClock.EXTRA_MINUTES, minute);
         //i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
         startActivity(i);
-        Log.d(TAG, "AlarmClock set for: " + hour + ":" + minute);
-
- /*       Intent intent = new Intent(this, ConfirmationActivity.class);
-        NumberPicker numberPicker  = (NumberPicker) findViewById(R.id.cycles);
-        numberPicker.setMaxValue(10);
-        numberPicker.setMinValue(0);
-        int sleepCycles = numberPicker.getValue();
-//        String sleepCycles = editText.getText().toString();
-        intent.putExtra(EXTRA_CYCLES, sleepCycles);
-
-        // Set preference variables in DB
-        //throw error check and catch
-//        try {
-//        int sleepCycles = Integer.parseInt(sleepCycles);
-//        } catch (NumberFormatException nfe){
-//            //show error message in Main Fragment
-//            System.out.println("Received a non-integer input.");
-//            //do not record any values
-//        }
-
-        // Start next activity (e.g. display confirmation message)
-        startActivity(intent);*/
+        Log.d(TAG, "AlarmClock set for (h:m): " + hour + ":" + minute);
     }
-
-    //should merge this with setSleepCycles as setPreferences
-//    public void setBedTime(View view) {
-//        // Set average start time of a night's sleep
-//        Intent intent = new Intent(this, ConfirmationActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.edit_message);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
-//    }
 
     public void openSettings(){
         // call Settings Activity
@@ -216,15 +278,6 @@ public class MainActivity extends Activity {
         // Field for average bed time
 
         // Field for # of sleep cycles preferred
-
-    }
-    public void openSearch(){
-        //unused
-    }
-
-    public void showNumberPickerDialog(View v) {
-        DialogFragment newFragment = new NumberPickerFragment();
-        newFragment.show(getFragmentManager(), "numberPicker");
 
     }
 
@@ -260,83 +313,6 @@ public class MainActivity extends Activity {
         args.putInt("dialogType",2);
         newFragment.setArguments(args);
         Log.d(TAG,"end of showTimePickerDialog");
-    }
-
-    //not in use right now!
-    // Create  TimePickerDialog listener
-/*    private TimePickerDialog.OnTimeSetListener bTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-
-                // the callback received when the user "sets" the TimePickerDialog in the dialog
-                public void onTimeSet(TimePicker view, int hourOfDay, int min) {
-                    hour = hourOfDay;
-                    minute = min;
-
-                    Log.d(TAG, "timepicker in main: " + hour + ":" + minute);
-
-                    bdTime.setText(hour+":"+minute);
-
-*//*                    //set textview accordingly
-                    TextView tv = (TextView) this.findViewById(R.id.textView_bedTime);
-                    tv.setText(""+ btimepickertime);*//*
-                }
-
-
-            };*/
-
-    /*TimePickerDialog.OnTimeSetListener mTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(android.widget.TimePicker view,
-                                      int hourOfDay, int minute) {
-                    Log.i("",""+hourOfDay+":"+minute);
-                }
-            };*/
-
-/*    // display current time
-    public void setCurrentTimeOnView() {
-
-        bdTime = (TextView) findViewById(R.id.textView_bedTime);
-        //timePicker1 = (TimePicker) findViewById(R.id.bedTime);
-
-        final Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
-
-        // set current time into textview
-        bdTime.setText(
-                new StringBuilder().append(pad(hour))
-                        .append(":").append(pad(minute)));
-
-        // set current time into timepicker
-        timePicker1.setCurrentHour(hour);
-        timePicker1.setCurrentMinute(minute);
-
-    }*/
-
-    //not in use right now!
-/*    // Method automatically gets Called when you call showDialog()  method
-    @Override
-    protected Dialog onCreateDialog(int id) {
-
-        Log.d(TAG,"onCreateDialog() called");
-
-        switch (id) {
-
-            // create a new TimePickerDialog with values you want to show
-            case TIME_DIALOG_ID:
-                return new TimePickerDialog(this,
-                        bTimeSetListener, bhour, bminute, false);
-
-        }
-        return null;
-    }*/
-
-    private static String pad(int c) {
-        if (c >= 10)
-            return String.valueOf(c);
-        else
-            return "0" + String.valueOf(c);
     }
 
     public Date calculateAlarm (int bhour, int bmin, int whour, int wmin) {
