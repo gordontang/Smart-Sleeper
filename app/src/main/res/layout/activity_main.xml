@@ -65,12 +65,34 @@
         android:textSize="8pt"
         android:text="@string/no_Time"/>
 
+    <TextView
+        android:id="@+id/textView_calcTimeDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_latestWakeUp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/settings_value_margin"
+        android:layout_alignParentLeft="true"
+        android:textSize="8pt"
+        android:textColor="#ffffff"
+        android:text="@string/calc_Time"/>
+
+    <TextView
+        android:id="@+id/textView_calcTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_latestWakeUp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/settings_value_margin"
+        android:layout_alignParentRight="true"
+        android:textSize="8pt"
+        android:text="@string/no_calcTime"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/button_latestWakeUp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="70dp"
         android:layout_centerHorizontal="true"
         android:text="@string/button_send"
         android:textSize="14pt"

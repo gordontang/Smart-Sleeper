@@ -16,9 +16,11 @@
     <string name="set_time">Time</string>
     <string name="set_date">Date</string>
     <string name="desc_settings">Set your sleep preferences!</string>
-    <string name="pick_bedTime">Average Bed Time</string>
-    <string name="pick_wakeTime">Latest Wake Up Time</string>
+    <string name="pick_bedTime">Set Bed Time</string>
+    <string name="pick_wakeTime">Set Wake Time</string>
     <string name="no_Time">No time set!</string>
+    <string name="calc_Time">You should get up at:</string>
+    <string name="no_calcTime">--</string>
 
     <!-- Confirmation Screen -->
     <string name="confirmed">Preferences Saved!</string>

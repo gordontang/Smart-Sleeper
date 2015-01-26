@@ -104,6 +104,13 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
             Log.d(TAG, "Timepicker called with dialogType = 0!");
         }
 
+        Date alarm = MainActivity.calculateAlarmTime(MainActivity.bhour, MainActivity.bminute,
+                MainActivity.whour, MainActivity.wminute);
+        Log.d(TAG,"Alarm time calculated: "+alarm);
+        TextView tv = (TextView) getActivity().findViewById(R.id.textView_calcTime);
+        tv.setText("" + String.format("%tl:%<tM%<tp", alarm));
+        Log.d(TAG,"Calculated time updated");
+
     }
 
 }

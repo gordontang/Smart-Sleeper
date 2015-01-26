@@ -27,13 +27,14 @@ public class MainActivity extends Activity {
     private BroadcastReceiver mReceiver = null;
     //tag for logcat output (e.g. console output)
     private static final String TAG = MainActivity.class.getSimpleName();
+
     // Declaring and initializing the extra message to cycles value
     public static String EXTRA_CYCLES = "com.example.gt.smartsleeper.CYCLES";
 
     public static int bhour=0;
     public static int bminute=0;
     public static String btimepickertime="0";
-    public static int whour=10;
+    public static int whour=0;
     public static int wminute=0;
     public static String wtimepickertime="0";
 
@@ -138,9 +139,11 @@ public class MainActivity extends Activity {
             Log.d(TAG,"new onStop handler added to task queue. H:"+bh+"M:"+bm);
                 numHandlers=1;
                 Log.d(TAG,"numHandlers set to: "+numHandlers);
-            //Post the Runnable callback to the queue
-            handler.postDelayed(r, 3600000);
             //Time delay: 60 minutes = 3600000ms
+            final int timeDelay = 3600000;
+            //Post the Runnable callback to the queue
+            handler.postDelayed(r, timeDelay);
+
         } else {
             Log.d(TAG,"no new handler as screen was off");
         }
@@ -233,7 +236,6 @@ public class MainActivity extends Activity {
 
         public PlaceholderFragment() {
         }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -251,12 +253,11 @@ public class MainActivity extends Activity {
         Log.d(TAG,"Set Alarm button pressed");
 
         //calculate what time the alarm should go off
-        Date alarm = calculateAlarm(bhour,bminute,whour,wminute);
+        Date alarm = calculateAlarmTime(bhour, bminute, whour, wminute);
         Log.d(TAG,"Alarm time calculated: "+alarm);
 
-        // Update on screen text to alarm time
-        TextView tv = (TextView) this.findViewById(R.id.textView_alarmTime);
-        tv.setText("" + String.format("%s\n %tl:%<tM%<tp", "Alarm set for", alarm));
+        setCalculatedTimeText(alarm);
+        Log.d(TAG,"Calculated time updated");
 
 //trying to create a separate class for the alarm clock functionality
         //boolean alarmSuccess = ManageAlarmClock.setAlarm(alarm);
@@ -267,6 +268,27 @@ public class MainActivity extends Activity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
         int minute = calendar.get(Calendar.MINUTE); // gets minute
 
+        //sets default Alarm Clock app with time
+        setDefaultAlarm(hour, minute);
+        // Update on screen text to alarm time
+        TextView tv = (TextView) this.findViewById(R.id.textView_alarmTime);
+        tv.setText("" + String.format("%s\n %tl:%<tM%<tp", "Alarm set for", alarm));
+    }
+
+    public void calculateAlarm() {
+        Date alarm = calculateAlarmTime(bhour, bminute, whour, wminute);
+        Log.d(TAG,"Alarm time calculated: "+alarm);
+        setCalculatedTimeText(alarm);
+        Log.d(TAG,"Calculated time updated");
+    }
+
+    public void setCalculatedTimeText(Date alarm) {
+        // Update on screen calculated time to alarm time
+        TextView tv = (TextView) this.findViewById(R.id.textView_calcTime);
+        tv.setText("" + String.format("%tl:%<tM%<tp", alarm));
+    }
+
+    public void setDefaultAlarm(int hour, int minute){
         // Setting an alarm on the Alarm Clock app with time
         // Note: can only set times in next 24 hours
         Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
@@ -276,15 +298,6 @@ public class MainActivity extends Activity {
         //i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
         startActivity(i);
         Log.d(TAG, "AlarmClock set for (h:m): " + hour + ":" + minute);
-    }
-
-    public void openSettings(){
-        // call Settings Activity
-
-        // Field for average bed time
-
-        // Field for # of sleep cycles preferred
-
     }
 
     public void showTimePickerDialog(View v) {
@@ -321,7 +334,7 @@ public class MainActivity extends Activity {
         Log.d(TAG,"end of showTimePickerDialog");
     }
 
-    public static Date calculateAlarm (int bhour, int bmin, int whour, int wmin) {
+    public static Date calculateAlarmTime(int bhour, int bmin, int whour, int wmin) {
         // Calculates what time to set the alarm to.
         // Alarm should be set to rounddown of
         // = (wake time - bed time)/90 minutes + time req'd to fall asleep
@@ -380,10 +393,11 @@ public class MainActivity extends Activity {
             alarm = new Date(alarmTime);
             System.out.printf("%s %tl:%<tM%<tp\n", "Date:", alarm);
             System.out.println(""+ String.format("%tc", alarm));
-            
+
         } catch (java.text.ParseException e) {
             e.printStackTrace();
         }
         return alarm;
     }
+
 }
