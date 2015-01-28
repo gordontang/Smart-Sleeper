@@ -14,7 +14,8 @@
         android:text="@string/desc_settings"
         android:textSize="9pt"
         android:textColor="@color/context"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
@@ -74,7 +75,7 @@
         android:layout_marginLeft="@dimen/settings_value_margin"
         android:layout_alignParentLeft="true"
         android:textSize="8pt"
-        android:textColor="#ffffff"
+        android:textColor="@color/action"
         android:text="@string/calc_Time"/>
 
     <TextView
@@ -86,6 +87,7 @@
         android:layout_marginRight="@dimen/settings_value_margin"
         android:layout_alignParentRight="true"
         android:textSize="8pt"
+        android:textColor="@color/action"
         android:text="@string/no_calcTime"/>
 
     <Button
@@ -96,7 +98,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/button_send"
         android:textSize="14pt"
-        android:textColor="@color/action"
+        android:textColor="@color/actionbar_text"
         android:onClick="setPreferences"
         android:id="@+id/button_setAlarm" />
 
@@ -107,8 +109,8 @@
         android:layout_marginTop="70dp"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="@string/no_Time"
-        android:textSize="10pt"
+        android:text=""
+        android:textSize="8pt"
         android:textColor="@color/actionbar_text"
         android:layout_alignTop="@id/button_setAlarm"/>
 

@@ -1,4 +1,4 @@
-package com.example.gt.smartsleeper;
+package ca.gordontang.smartsleeper;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

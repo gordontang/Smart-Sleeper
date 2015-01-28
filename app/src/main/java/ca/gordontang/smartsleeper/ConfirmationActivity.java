@@ -1,4 +1,4 @@
-package com.example.gt.smartsleeper;
+package ca.gordontang.smartsleeper;
 
 import android.app.Activity;
 import android.os.Bundle;

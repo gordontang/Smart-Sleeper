@@ -1,4 +1,4 @@
-package com.example.gt.smartsleeper;
+package ca.gordontang.smartsleeper;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -318,9 +318,9 @@ public class MainActivity extends Activity {
 
         //creating a new bundle that includes dialogType
         Bundle args = new Bundle();
-        args.putInt("dialogType",1);
+        args.putInt("dialogType", 1);
         newFragment.setArguments(args);
-        Log.d(TAG,"end of showTimePickerDialog");
+        Log.d(TAG, "end of showTimePickerDialog");
     }
     public void showWakeTimePickerDialog(View v) {
         Log.d(TAG,"show timepickerdialog function called");
@@ -329,9 +329,9 @@ public class MainActivity extends Activity {
 
         //creating a new bundle that includes dialogType
         Bundle args = new Bundle();
-        args.putInt("dialogType",2);
+        args.putInt("dialogType", 2);
         newFragment.setArguments(args);
-        Log.d(TAG,"end of showTimePickerDialog");
+        Log.d(TAG, "end of showTimePickerDialog");
     }
 
     public static Date calculateAlarmTime(int bhour, int bmin, int whour, int wmin) {

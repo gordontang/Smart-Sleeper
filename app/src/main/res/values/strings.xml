@@ -15,7 +15,7 @@
     <!-- Preferences - string definitions -->
     <string name="set_time">Time</string>
     <string name="set_date">Date</string>
-    <string name="desc_settings">Get full sleep cycles of rest!</string>
+    <string name="desc_settings">Catch full sleep cycles for a great night\'s rest!</string>
     <string name="pick_bedTime">Set Bed Time</string>
     <string name="pick_wakeTime">Set Wake Time</string>
     <string name="no_Time">No time set!</string>

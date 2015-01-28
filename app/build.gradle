@@ -4,7 +4,7 @@ android {
     compileSdkVersion 19
     buildToolsVersion '20.0.0'
     defaultConfig {
-        applicationId 'com.example.gt.smartsleeper'
+        applicationId 'ca.gordontang.smartsleeper'
         minSdkVersion 15
         targetSdkVersion 19
         versionCode 1

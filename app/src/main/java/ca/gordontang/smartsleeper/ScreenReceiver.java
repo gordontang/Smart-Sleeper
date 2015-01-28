@@ -1,9 +1,8 @@
-package com.example.gt.smartsleeper;
+package ca.gordontang.smartsleeper;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.AlarmClock;
 import android.util.Log;
 
 /**
