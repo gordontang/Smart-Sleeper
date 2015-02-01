@@ -5,7 +5,7 @@ An automatic sleep cycle calculator that integrates with the Android alarm.
 
 View it on Google Play: https://play.google.com/store/apps/details?id=ca.gordontang.smartsleeper&hl=en
 
-Functions:
+**Functions:**
 
 1 - Set preferences
 * Bed time
